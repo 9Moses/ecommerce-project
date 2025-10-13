@@ -17,11 +17,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // ✅ New lambda-based syntax
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**").permitAll()
+                        .pathMatchers("/api/**").permitAll()
                         .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> {}) // ✅ new style for configuring JWT (no deprecated call)
-                );
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
 
         return http.build();
     }
