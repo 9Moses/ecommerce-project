@@ -24,7 +24,7 @@ public class OrderService {
     private final OrderRepository repository;
     private final WebClient.Builder webClientBuilder;
 
-    public void placeOrder(OrderRequest request){
+    public String placeOrder(OrderRequest request){
         OrderEntity order = new OrderEntity();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -42,7 +42,7 @@ public class OrderService {
 
       //Call Inventory service, and place order if product is in stock
        InventoryResponse[] inventoryResponsesArray =  webClientBuilder.build().get()
-                .uri("http://INVENTORYSERVICE/api/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build() )
+                .uri("http://inventoryService/api/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build() )
                         .retrieve()
                                 .bodyToMono(InventoryResponse[].class)
                                         .block();
@@ -56,7 +56,7 @@ public class OrderService {
        }else{
            throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
-
+ return "Order Place Successfully";
     }
 
     private OrderLineItem mapToDTO(OrderLineItemDTO orderLineItemDTO) {
