@@ -56,6 +56,10 @@
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing</artifactId>
+        </dependency>
         <!-- Optional: Zipkin integration -->
         <dependency>
             <groupId>io.zipkin.reporter2</groupId>

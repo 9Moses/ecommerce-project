@@ -1,5 +1,6 @@
 package com.programmingSpaceX.invertoryService.Service;
 
+import brave.Tracer;
 import com.programmingSpaceX.invertoryService.Repository.InventoryRepository;
 import com.programmingSpaceX.invertoryService.dto.InventoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 @Slf4j
 public class InventoryService {
 
@@ -35,5 +36,22 @@ public class InventoryService {
                           .build()
               )
               .toList();
+    }
+
+    private final Tracer tracer;
+
+    public InventoryService(InventoryRepository inventoryRepository, Tracer tracer) {
+        this.inventoryRepository = inventoryRepository;
+        this.tracer = tracer;
+    }
+
+    public void testTrace() {
+        var currentSpan = tracer.currentSpan();
+        if (currentSpan != null) {
+            System.out.println("Current trace ID: " + currentSpan.context().traceId());
+            System.out.println("Current span ID: " + currentSpan.context().spanId());
+        } else {
+            System.out.println("⚠️ No current span found — tracing not active!");
+        }
     }
 }
